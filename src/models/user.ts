@@ -4,7 +4,8 @@ import { Task } from './task';
 export class User {
 
     private _id: string;
-    private _tasks: Task[]
+    private _tasks: Task[];
+    private _archivedTasks: Task[];
 
     constructor(
         private _email: string,
@@ -13,6 +14,7 @@ export class User {
     ) {
         this._id = createUuid();
         this._tasks = [];
+        this._archivedTasks = [];
     }
 
     get id() {
@@ -50,4 +52,12 @@ export class User {
     set tasks(tasks: Task[]) {
         this._tasks = tasks
     };
+
+    get archivedTasks() {
+        return this._archivedTasks;
+    };
+
+    set archivedTasks(task: Task[]) {
+        this._archivedTasks = task
+    }
 }

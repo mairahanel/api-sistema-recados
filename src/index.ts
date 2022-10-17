@@ -7,5 +7,5 @@ app.use(express.json());
 app.use("/users", userRoutes);
 
 app.listen(3000, () => {
-    console.log("API rodando, que Deus nos ajude...");
+    console.log("API rodando...");
 })

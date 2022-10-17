@@ -143,4 +143,93 @@ export class TaskController {
             })
         }
     };
+
+    public toFile(req: Request, res: Response) {
+        try {
+            
+            const { userId, id } = req.params;
+            
+            let user = usersList.find((user) => user.id === userId);
+
+            if(!user) {
+                return res.status(404).send({
+                    ok: false,
+                    message: "User not found"
+                })
+            };
+
+            let userTask = user.tasks.find((task) => task.id === id);
+            let taskIndex = user.tasks.findIndex((task) => task.id === id);
+
+            if(!userTask) {
+                return res.status(404).send({
+                    ok: false,
+                    message: "Task not found"
+                })
+            };
+
+            const task = userTask;
+
+            user.archivedTasks.push(task);
+
+            user.tasks.splice(taskIndex, 1);
+
+            return res.status(200).send({
+                ok: true,
+                message: "Task succesfully archived",
+                data: user.tasks
+            });
+
+        } catch (error: any) {
+            return res.status(500).send({
+                ok: false,
+                message: error.toString()
+            })
+        }
+    };
+
+    public unfile(req: Request, res: Response) {
+        try {
+            
+            const { userId, id } = req.params;
+
+            let user = usersList.find((user) => user.id === userId);
+
+            if(!user) {
+                return res.status(404).send({
+                    ok: false,
+                    message: "User not found"
+                })
+            };
+
+            let userTask = user.archivedTasks.find((task) => task.id === id);
+
+            if(!userTask) {
+                return res.status(404).send({
+                    ok: false,
+                    message: "Task not found"
+                })
+            };
+
+            const task = userTask;
+
+            user.tasks.push(task);
+
+            let taskIndex = user.archivedTasks.findIndex((task) => task.id === id);
+
+            user.archivedTasks.splice(taskIndex, 1);
+
+            return res.status(200).send({
+                ok: true,
+                message: "Task succesfully unarchived",
+                data: user.archivedTasks
+            });
+
+        } catch (error: any) {
+            return res.status(500).send({
+                ok: false,
+                message: error.toString()
+            })
+        }
+    };
 }

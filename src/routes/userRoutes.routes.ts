@@ -11,3 +11,7 @@ userRoutes.post("/:userId/tasks", (req: Request, res: Response) => new TaskContr
 userRoutes.delete("/:userId/tasks/:id", (req: Request, res: Response) => new TaskController().delete(req, res));
 
 userRoutes.put("/:userId/tasks/:id", (req: Request, res: Response) => new TaskController().edit(req, res));
+
+userRoutes.post("/:userId/tasks/:id", (req: Request, res: Response) => new TaskController().toFile(req, res));
+
+userRoutes.post("/:userId/tasks/:id/archived", (req: Request, res: Response) => new TaskController().unfile(req, res));
