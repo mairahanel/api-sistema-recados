@@ -51,6 +51,34 @@ export class TaskController {
         }
     };
 
+    public getAll(req: Request, res: Response) {
+        try {
+            
+            const { userId} = req.params;
+
+            let user = usersList.find((user) => user.id === userId);
+
+            if(!user) {
+                return res.status(404).send({
+                    ok: false,
+                    message: "User not found"
+                })
+            };
+
+            return res.status(200).send({
+                ok: true,
+                message: "Tasks succesfully listed",
+                data: user.tasks
+            });
+
+        } catch (error: any) {
+            return res.status(500).send({
+                ok: false,
+                message: error.toString()
+            })
+        }
+    };
+
     public delete(req: Request, res: Response) {
         try {
             const { userId, id } = req.params;

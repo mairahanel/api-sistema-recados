@@ -9,13 +9,6 @@ export class UserController {
             
             const {email, password, verifyPassword} = req.body;
 
-            if(usersList.some(user => user.email === email)) {
-                return res.status(400).send({
-                    ok: false,
-                    message: "Email already registred on the system"
-                })
-            };
-
             if(!email) {
                 return res.status(400).send({
                     ok: false,
@@ -53,5 +46,54 @@ export class UserController {
                 message: error.toString()
             })
         }
-    }
+    };
+
+    public login(req: Request, res: Response) {
+        try {
+            
+            const { email, password } = req.body;
+
+            if(!email) {
+                return res.status(400).send({
+                    ok: false,
+                    message: "Email not provided"
+                })
+            };
+
+            if(!password) {
+                return res.status(400).send({
+                    ok: false,
+                    message: "Password not provided"
+                })
+            };
+
+            let checkUser = usersList.find((user) => user.email === email);
+
+            if(!checkUser) {
+                return res.status(404).send({
+                    ok: false,
+                    message: "User not found"
+                })
+            };
+
+            if(checkUser?.password !== password) {
+                return res.status(400).send({
+                    ok: false,
+                    message: "Login error"
+                })
+            };
+
+            return res.status(200).send({
+                ok: true,
+                message: "Login succesfully done",
+                data: checkUser?.id
+            });
+
+        } catch (error: any) {
+            return res.status(500).send({
+                ok: false,
+                message: error.toString()
+            })
+        }
+    };
 }
