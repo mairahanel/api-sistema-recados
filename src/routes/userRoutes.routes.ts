@@ -21,4 +21,6 @@ userRoutes.put("/:userId/tasks/:id", (req: Request, res: Response) => new TaskCo
 
 userRoutes.post("/:userId/tasks/:id", (req: Request, res: Response) => new TaskController().toFile(req, res));
 
+userRoutes.get("/:userId/tasks/archived", (req: Request, res: Response) => new TaskController().getAllArchived(req, res));
+
 userRoutes.post("/:userId/tasks/:id/archived", (req: Request, res: Response) => new TaskController().unfile(req, res));
