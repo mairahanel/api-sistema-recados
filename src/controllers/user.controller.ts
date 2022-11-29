@@ -98,7 +98,7 @@ export class UserController {
         }
     };
 
-    // falta fazer o login
+    // não feito
 
     public login(req: Request, res: Response) {
         try {

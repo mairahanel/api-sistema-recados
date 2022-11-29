@@ -1,16 +1,20 @@
 import { Request, Response, NextFunction } from "express";
-import { usersList } from "../data/usersList";
+import { UserRepository } from "../database/repositories/user.repository";
 
-export const emailExistsMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const  emailExistsMiddleware = async (req: Request, res: Response, next: NextFunction) => {
 
     const { email } = req.body;
 
-    if(usersList.some(user => user.email === email)) {
+    const repository = new UserRepository();
+
+    const exists = await repository.getEmail(email);
+
+    if(exists) {
         return res.status(400).send({
             ok: false,
             message: "Email already registred on the system"
         })
-    }
+    };
 
     next();
 };

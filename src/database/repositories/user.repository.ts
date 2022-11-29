@@ -16,6 +16,12 @@ export class UserRepository {
         })
     }
 
+    public async getEmail(email: string) {
+        return await this._repository.findBy({
+            email
+        })
+    }
+
     public async create(user: User) {
         const userEntity = this._repository.create({
             id: user.id,

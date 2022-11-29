@@ -5,6 +5,7 @@ import { Task } from "../models/task";
 
 export class TaskController {
 
+    //feito
      public async create(req: Request, res: Response) {
         try {
             
@@ -73,6 +74,7 @@ export class TaskController {
         }
     };
 
+    //não feito
      public delete(req: Request, res: Response) {
         try {
             const { userId, id } = req.params;
