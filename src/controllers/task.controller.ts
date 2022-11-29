@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import { usersList } from "../data/usersList";
+import { TaskRepository } from "../database/repositories/task.repository";
 import { Task } from "../models/task";
 
 export class TaskController {
 
-    public create(req: Request, res: Response) {
+     public create(req: Request, res: Response) {
         try {
             
             const { description, detail } = req.body;
@@ -49,16 +50,17 @@ export class TaskController {
                 message: error.toString()
             })
         }
-    };
+    }; 
 
-    public getAll(req: Request, res: Response) {
+    public async getAll(req: Request, res: Response) {
         try {
             
-            const { userId} = req.params;
+            const { userId } = req.params;
 
-            let user = usersList.find((user) => user.id === userId);
+            const repository = new TaskRepository();
+            const result = await repository.list(userId)
 
-            if(!user) {
+            if(!result) {
                 return res.status(404).send({
                     ok: false,
                     message: "User not found"
@@ -68,7 +70,7 @@ export class TaskController {
             return res.status(200).send({
                 ok: true,
                 message: "Tasks succesfully listed",
-                data: user.tasks
+                data: result
             });
 
         } catch (error: any) {
@@ -79,7 +81,7 @@ export class TaskController {
         }
     };
 
-    public delete(req: Request, res: Response) {
+     public delete(req: Request, res: Response) {
         try {
             const { userId, id } = req.params;
 
@@ -115,9 +117,9 @@ export class TaskController {
                 message: error.toString()
             })
         }
-    };
+    }; 
 
-    public edit(req: Request, res: Response) {
+     public edit(req: Request, res: Response) {
         try {
             
             const { userId, id } = req.params;
@@ -170,9 +172,9 @@ export class TaskController {
                 message: error.toString()
             })
         }
-    };
+    }; 
 
-    public toFile(req: Request, res: Response) {
+     public toFile(req: Request, res: Response) {
         try {
             
             const { userId, id } = req.params;
@@ -214,9 +216,9 @@ export class TaskController {
                 message: error.toString()
             })
         }
-    };
+    }; 
 
-    public getAllArchived(req: Request, res: Response) {
+     public getAllArchived(req: Request, res: Response) {
         try {
             
             const { userId} = req.params;
@@ -242,9 +244,9 @@ export class TaskController {
                 message: error.toString()
             })
         }
-    };
+    }; 
 
-    public unfile(req: Request, res: Response) {
+     public unfile(req: Request, res: Response) {
         try {
             
             const { userId, id } = req.params;
@@ -287,5 +289,5 @@ export class TaskController {
                 message: error.toString()
             })
         }
-    };
+    }; 
 }

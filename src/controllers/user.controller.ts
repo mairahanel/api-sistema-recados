@@ -1,10 +1,59 @@
 import { Request, Response } from "express";
 import { usersList } from "../data/usersList";
+import { UserRepository } from "../database/repositories/user.repository";
 import { User } from "../models/user";
 
 export class UserController {
 
-    public create(req: Request, res: Response) {
+    public async listAll(req: Request, res: Response) {
+        try {
+
+            const repository = new UserRepository();
+            const result = await repository.list();
+
+            return res.status(200).send({
+                ok: true,
+                message: "Users succesfully listed",
+                data: result
+            });
+
+        } catch (error: any) {
+            return res.status(500).send({
+                ok: false,
+                message: error.toString()
+            })
+        }
+    };
+
+    public async getById(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+
+            const repository = new UserRepository();
+            const result = await repository.get(id);
+
+            if(!result) {
+                return res.status(404).send({
+                    ok: false,
+                    message: "User not found"
+                })
+            };
+
+            return res.status(200).send({
+                ok: true,
+                message: "User succesfully obtained",
+                data: result
+            })
+
+        } catch (error: any) {
+            return res.status(500).send({
+                ok: false,
+                message: error.toString()
+            })
+        }
+    };
+
+    public async create(req: Request, res: Response) {
         try {
             
             const {email, password, verifyPassword} = req.body;
@@ -32,12 +81,13 @@ export class UserController {
 
             const user = new User(email, password, verifyPassword);
 
-            usersList.push(user);
+            const repository = new UserRepository();
+            const result = await repository.create(user);
 
             return res.status(201).send({
                 ok: true,
                 message: "User succesfully created",
-                data: usersList
+                data: result
             });
 
         } catch (error: any) {
@@ -47,6 +97,8 @@ export class UserController {
             })
         }
     };
+
+    // falta fazer o login
 
     public login(req: Request, res: Response) {
         try {

@@ -1,0 +1,25 @@
+import { Entity, Column, PrimaryColumn, OneToMany } from 'typeorm';
+import { TaskEntity } from './task.entity';
+
+@Entity({
+    name: "usuario"
+})
+export class UserEntity {
+
+    @PrimaryColumn()
+    id!: string;
+
+    @Column({
+        length: 60
+    })
+    email!: string;
+
+    @Column({
+        length: 20,
+        select: false
+    })
+    senha!: string;
+
+    @OneToMany(() => TaskEntity, (task) => task.usuario)
+    tasks!: TaskEntity[];
+}

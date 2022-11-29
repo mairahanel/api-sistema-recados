@@ -45,7 +45,7 @@ export class User {
         this._vPassword = password
     };
 
-    get tasks() {
+     get tasks() {
         return this._tasks
     };
 
@@ -59,5 +59,15 @@ export class User {
 
     set archivedTasks(task: Task[]) {
         this._archivedTasks = task
-    }
+    } 
+
+   /*  public static create(
+        id: string,
+        email: string,
+        senha: string,
+        v_senha: string
+    ) {
+        const user = new User(email, senha, v_senha);
+        user._id = id
+    } */
 }
