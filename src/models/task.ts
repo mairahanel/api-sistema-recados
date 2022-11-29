@@ -6,9 +6,14 @@ export class Task {
 
     constructor(
         private _description: string,
-        private _detail: string
+        private _detail: string,
+        private _userId: string
     ) {
         this._id = createUuid();
+    }
+
+    public get userId() {
+        return this._userId
     }
 
     public get id() {

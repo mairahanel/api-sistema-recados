@@ -5,7 +5,7 @@ import { Task } from "../models/task";
 
 export class TaskController {
 
-     public create(req: Request, res: Response) {
+     public async create(req: Request, res: Response) {
         try {
             
             const { description, detail } = req.body;
@@ -25,23 +25,15 @@ export class TaskController {
                 })
             };
 
-            const task = new Task(description, detail);
+            const task = new Task(description, detail, userId);
 
-            let userTask = usersList.find((user) => user.id === userId);
-
-            if(!userTask) {
-                return res.status(404).send({
-                    ok: false,
-                    message: "User not found"
-                })
-            };
-
-            userTask.tasks.push(task);
+            const repository = new TaskRepository();
+            const result = await repository.create(task);
 
             return res.status(201).send({
                 ok: true,
                 message: "Task succesfully created",
-                data: userTask.tasks
+                data: result
             });
 
         } catch (error: any) {
