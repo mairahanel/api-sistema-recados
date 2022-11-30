@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { usersList } from "../data/usersList";
 import { TaskRepository } from "../database/repositories/task.repository";
+import { UserRepository } from "../database/repositories/user.repository";
 import { Task } from "../models/task";
 
 export class TaskController {
@@ -74,35 +75,36 @@ export class TaskController {
         }
     };
 
-    //não feito
-     public delete(req: Request, res: Response) {
+     public async delete(req: Request, res: Response) {
         try {
             const { userId, id } = req.params;
 
-            let user = usersList.find((user) => user.id === userId);
+            const userRepository = new UserRepository();
+            const userResult = await userRepository.get(userId);
 
-            if(!user) {
+            if(!userResult) {
                 return res.status(404).send({
                     ok: false,
                     message: "User not found"
                 })
             };
 
-            let taskIndex = user.tasks.findIndex((task) => task.id === id);
+            const repository = new TaskRepository();
+            const task = await repository.get(id);
+            const result = await repository.delete(id)
 
-            if(taskIndex < 0) {
+
+             if(!task) {
                 return res.status(404).send({
                     ok: false,
                     message: "Task not found"
                 })
             };
 
-            user.tasks.splice(taskIndex, 1);
-
             return res.status(200).send({
                 ok: true,
                 message: "Task succesfully deleted",
-                data: user.tasks
+                data: result
             });
 
         } catch (error: any) {
@@ -113,6 +115,7 @@ export class TaskController {
         }
     }; 
 
+    //não feito
      public edit(req: Request, res: Response) {
         try {
             
