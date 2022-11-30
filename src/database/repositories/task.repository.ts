@@ -22,4 +22,14 @@ export class TaskRepository {
         return await this._repository.save(taskEntity);
     }
 
+    public async get(id: string) {
+        return this._repository.findOneBy({
+            id
+        })
+    }
+
+    public async delete(id: string) {
+        return await this._repository.delete(id)
+    }
+
 }

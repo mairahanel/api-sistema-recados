@@ -22,6 +22,12 @@ export class UserRepository {
         })
     }
 
+/*     public async getUsuario(usuario: UserEntity) {
+        return await this._repository.findBy({
+            senha: usuario.senha
+        })
+    } */
+
     public async create(user: User) {
         const userEntity = this._repository.create({
             id: user.id,

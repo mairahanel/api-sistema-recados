@@ -119,26 +119,30 @@ export class UserController {
                 })
             };
 
-            let checkUser = usersList.find((user) => user.email === email);
+            //let checkUser = usersList.find((user) => user.email === email);
 
-            if(!checkUser) {
+            const repository = new UserRepository();
+            const result = repository.getEmail(email);
+            //const resultUser = repository.getUsuario(password);
+
+            if(!result) {
                 return res.status(404).send({
                     ok: false,
                     message: "User not found"
                 })
             };
 
-            if(checkUser?.password !== password) {
+/*              if(resultUser !== password) {
                 return res.status(400).send({
                     ok: false,
                     message: "Login error"
                 })
-            };
+            };  */
 
             return res.status(200).send({
                 ok: true,
                 message: "Login succesfully done",
-                data: checkUser?.id
+                data: result
             });
 
         } catch (error: any) {
