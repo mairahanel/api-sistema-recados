@@ -9,7 +9,10 @@
         "dev:one": "ts-node-dev ./src/index.ts",
         "dev:debug": "ts-node-dev --inspect --respawn --transpile-only ./src/index.ts",
         "build": "tsc",
-        "start": "node ./build/index.js"
+        "start": "node ./build/index.js",
+        "typeorm": "typeorm-ts-node-commonjs",
+        "migration:generate": "npm run typeorm migration:generate -- -d ./src/database/config/config.ts",
+        "migration:run": " npm run typeorm migration:run -- -d src/database/config/config.ts"
     },
     "keywords": [],
     "author": "",

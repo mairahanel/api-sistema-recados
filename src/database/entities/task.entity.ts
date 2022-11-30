@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { UserEntity } from './user.entity';
 
 @Entity({
@@ -14,13 +14,15 @@ export class TaskEntity {
     @Column()
     detalhamento!: string;
 
-    @Column()
+    @Column({
+        default: false
+    })
     arquivado!: boolean;
 
-    @Column()
+    @CreateDateColumn()
     dthr_registro!: Date;
 
-    @Column({
+    @UpdateDateColumn({
         nullable: true
     })
     dthr_atualizacao!: Date;

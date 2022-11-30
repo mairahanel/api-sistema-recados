@@ -10,7 +10,8 @@ export class UserEntity {
     id!: string;
 
     @Column({
-        length: 60
+        length: 60,
+        unique: true
     })
     email!: string;
 
