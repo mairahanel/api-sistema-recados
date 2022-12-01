@@ -115,52 +115,43 @@ export class TaskController {
         }
     }; 
 
-    //não feito
-     public edit(req: Request, res: Response) {
+     public async edit(req: Request, res: Response) {
         try {
             
             const { userId, id } = req.params;
             const { description, detail } = req.body;
 
-            let user = usersList.find((user) => user.id === userId);
 
-            if(!user) {
+            const userRepository = new UserRepository();
+            const userResult = await userRepository.get(userId);
+
+            if(!userResult) {
                 return res.status(404).send({
                     ok: false,
                     message: "User not found"
                 })
             };
 
-            let userTask = user.tasks.find((task) => task.id === id);
+            const repository = new TaskRepository();
+            const result = await repository.get(id);
 
-            if(!userTask) {
+            if(!result) {
                 return res.status(404).send({
                     ok: false,
-                    message: "Task not found"
+                    message: 'Task not found'
                 })
             };
 
-            if(!description) {
-                return res.status(400).send({
-                    ok: false,
-                    message: "Description not provided"
-                })
-            };
+            const resultUpdate = await repository.update(result, {
+                description,
+                detail
+            });
 
-            if(!detail) {
-                return res.status(400).send({
-                    ok: false,
-                    message: "Detail not provided"
-                })
-            };
-
-            userTask.description = description;
-            userTask.detail = detail;
 
             return res.status(201).send({
                 ok: true,
-                message: "Task succesfully edited",
-                data: user.tasks
+                message: "Task succesfully updated",
+                data: resultUpdate
             });
 
         } catch (error: any) {
@@ -171,6 +162,7 @@ export class TaskController {
         }
     }; 
 
+    //não feito
      public toFile(req: Request, res: Response) {
         try {
             
