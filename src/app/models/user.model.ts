@@ -1,5 +1,5 @@
 import {v4 as createUuid} from 'uuid';
-import { Task } from './task';
+import { Task } from './task.model';
 
 export class User {
 

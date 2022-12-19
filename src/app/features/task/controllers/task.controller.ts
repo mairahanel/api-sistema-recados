@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import { usersList } from "../data/usersList";
-import { TaskRepository } from "../database/repositories/task.repository";
-import { UserRepository } from "../database/repositories/user.repository";
-import { Task } from "../models/task";
+import { usersList } from "../../../shared/data/usersList";
+import { TaskRepository } from "../repositories/task.repository";
+import { UserRepository } from "../../user/repositories/user.repository";
+import { Task } from "../../../models/task.model";
+import { serverError } from "../../../shared/util/response.helper";
 
 export class TaskController {
 
@@ -39,10 +40,7 @@ export class TaskController {
             });
 
         } catch (error: any) {
-            return res.status(500).send({
-                ok: false,
-                message: error.toString()
-            })
+            return serverError(res, error);
         }
     }; 
 
@@ -68,10 +66,7 @@ export class TaskController {
             });
 
         } catch (error: any) {
-            return res.status(500).send({
-                ok: false,
-                message: error.toString()
-            })
+            return serverError(res, error);
         }
     };
 
@@ -108,10 +103,7 @@ export class TaskController {
             });
 
         } catch (error: any) {
-            return res.status(500).send({
-                ok: false,
-                message: error.toString()
-            })
+            return serverError(res, error);
         }
     }; 
 
@@ -155,10 +147,7 @@ export class TaskController {
             });
 
         } catch (error: any) {
-            return res.status(500).send({
-                ok: false,
-                message: error.toString()
-            })
+            return serverError(res, error);
         }
     }; 
 
@@ -200,10 +189,7 @@ export class TaskController {
             });
 
         } catch (error: any) {
-            return res.status(500).send({
-                ok: false,
-                message: error.toString()
-            })
+            return serverError(res, error);
         }
     }; 
 
@@ -228,10 +214,7 @@ export class TaskController {
             });
 
         } catch (error: any) {
-            return res.status(500).send({
-                ok: false,
-                message: error.toString()
-            })
+            return serverError(res, error);
         }
     }; 
 
@@ -273,10 +256,7 @@ export class TaskController {
             });
 
         } catch (error: any) {
-            return res.status(500).send({
-                ok: false,
-                message: error.toString()
-            })
+            return serverError(res, error);
         }
     }; 
 }

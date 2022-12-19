@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { usersList } from "../data/usersList";
-import { UserRepository } from "../database/repositories/user.repository";
-import { User } from "../models/user";
+import { usersList } from "../../../shared/data/usersList";
+import { UserRepository } from "../repositories/user.repository";
+import { User } from "../../../models/user.model";
+import { serverError, sucess } from "../../../shared/util/response.helper";
 
 export class UserController {
 
@@ -11,17 +12,10 @@ export class UserController {
             const repository = new UserRepository();
             const result = await repository.list();
 
-            return res.status(200).send({
-                ok: true,
-                message: "Users succesfully listed",
-                data: result
-            });
+            return sucess(res, result, "Users succesfully listed");
 
         } catch (error: any) {
-            return res.status(500).send({
-                ok: false,
-                message: error.toString()
-            })
+            return serverError(res, error);
         }
     };
 
@@ -46,10 +40,7 @@ export class UserController {
             })
 
         } catch (error: any) {
-            return res.status(500).send({
-                ok: false,
-                message: error.toString()
-            })
+            return serverError(res, error);
         }
     };
 
@@ -91,10 +82,7 @@ export class UserController {
             });
 
         } catch (error: any) {
-            return res.status(500).send({
-                ok: false,
-                message: error.toString()
-            })
+            return serverError(res, error);
         }
     };
 
@@ -146,10 +134,7 @@ export class UserController {
             });
 
         } catch (error: any) {
-            return res.status(500).send({
-                ok: false,
-                message: error.toString()
-            })
+            return serverError(res, error);
         }
     };
 }

@@ -1,7 +1,7 @@
-import { Task } from "../../models/task";
-import { DatabaseConnection } from "../config/connection";
-import { TaskEntity } from "../entities/task.entity";
-import { UserEntity } from "../entities/user.entity";
+import { Task } from "../../../models/task.model";
+import { DatabaseConnection } from "../../../../main/database/typeorm.connection";
+import { TaskEntity } from "../../../shared/entities/task.entity";
+import { UserEntity } from "../../../shared/entities/user.entity";
 
 interface UpdateTaskDTO {
     description?: string,

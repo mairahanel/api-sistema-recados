@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { UserRepository } from "../database/repositories/user.repository";
+import { UserRepository } from "../../features/user/repositories/user.repository";
 
 export const  emailExistsMiddleware = async (req: Request, res: Response, next: NextFunction) => {
 
