@@ -3,67 +3,46 @@ import { usersList } from "../../../shared/data/usersList";
 import { TaskRepository } from "../repositories/task.repository";
 import { UserRepository } from "../../user/repositories/user.repository";
 import { Task } from "../../../models/task.model";
-import { serverError } from "../../../shared/util/response.helper";
+import { notFoundError, serverError, success, successCreate } from "../../../shared/util/response.helper";
+import { ListTasksUsecase } from "../usecases/list-tasks.usecase";
+import { CreateTaskUsecase } from "../usecases/create-task.usecase";
 
 export class TaskController {
 
     //feito
-     public async create(req: Request, res: Response) {
+    public async create(req: Request, res: Response) {
         try {
-            
             const { description, detail } = req.body;
             const { userId } = req.params;
 
-            if(!description) {
-                return res.status(400).send({
-                    ok: false,
-                    message: "Description not provided"
-                })
-            };
+            const usecase = new CreateTaskUsecase(new TaskRepository);
+            const result = await usecase.execute({
+                description, 
+                detail,
+                userId, 
+            }); 
 
-            if(!detail) {
-                return res.status(400).send({
-                    ok: false,
-                    message: "Detail not provided"
-                })
-            };
-
-            const task = new Task(description, detail, userId);
-
-            const repository = new TaskRepository();
-            const result = await repository.create(task);
-
-            return res.status(201).send({
-                ok: true,
-                message: "Task succesfully created",
-                data: result
-            });
+            return successCreate(res, result, "Task successfully created");
 
         } catch (error: any) {
             return serverError(res, error);
         }
     }; 
 
+    //feito
     public async getAll(req: Request, res: Response) {
         try {
             
             const { userId } = req.params;
 
-            const repository = new TaskRepository();
-            const result = await repository.list(userId)
+            const usecase = new ListTasksUsecase(new TaskRepository);
+            const result = await usecase.execute(userId);
 
             if(!result) {
-                return res.status(404).send({
-                    ok: false,
-                    message: "User not found"
-                })
+                return notFoundError(res, "User not found")
             };
 
-            return res.status(200).send({
-                ok: true,
-                message: "Tasks succesfully listed",
-                data: result
-            });
+            return success(res, result, "Tasks successfully listed");
 
         } catch (error: any) {
             return serverError(res, error);
@@ -150,6 +129,8 @@ export class TaskController {
             return serverError(res, error);
         }
     }; 
+
+
 
     //não feito
      public toFile(req: Request, res: Response) {

@@ -1,9 +1,10 @@
 import { Request, Response, Router } from "express";
 import { TaskController } from "../controllers/task.controller";
+import { createTaskValidator } from "../validators/create-task.validator";
 
 export const taskRoutes = Router();
 
-taskRoutes.post("/:userId/tasks", (req: Request, res: Response) => new TaskController().create(req, res));
+taskRoutes.post("/:userId/tasks", [createTaskValidator], (req: Request, res: Response) => new TaskController().create(req, res));
 
 taskRoutes.get("/:userId/tasks", (req: Request, res: Response) => new TaskController().getAll(req, res));
 

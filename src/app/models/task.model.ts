@@ -35,4 +35,25 @@ export class Task {
     public set detail(detail: string) {
         this._detail = detail
     };
+
+    public toJson() {
+        return {
+            id: this._id,
+            description: this._description,
+            detail: this._detail,
+            userId: this._userId,
+        }
+    }
+
+    public static create(
+        id: string,
+        description: string,
+        detail: string,
+        userId: string,
+    ) {
+        const task = new Task(description, detail, userId);
+        task._id = id;
+
+        return task;
+    }
 }

@@ -14,6 +14,13 @@ export const notFoundError = (res: Response, message?: string) => {
     });
 }
 
+export const badRequestError = (res: Response, message?: string) => {
+    return res.status(400).send({
+        ok: false,
+        message
+    });
+}
+
 export const success = (res: Response, data?: any, message?: string) => {
     return res.status(200).send({
         ok: true, 
