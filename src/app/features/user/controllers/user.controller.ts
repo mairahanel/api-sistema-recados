@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { UserRepository } from "../repositories/user.repository";
-import { User } from "../../../models/user.model";
-import { serverError, successCreate, success } from "../../../shared/util/response.helper";
+import { serverError, successCreate, success, notFoundError } from "../../../shared/util/response.helper";
 import { ListUsersUsecase } from "../usecases/list-users.usecase";
 import { CreateUserUsecase } from "../usecases/create-user.usecase";
+import { GetUserUsecase } from "../usecases/get-user.usecase";
 
 export class UserController {
 
@@ -20,25 +20,19 @@ export class UserController {
         }
     };
 
+    //feito
     public async getById(req: Request, res: Response) {
         try {
             const { id } = req.params;
 
-            const repository = new UserRepository();
-            const result = await repository.get(id);
+            const usecase = new GetUserUsecase(new UserRepository);
+            const result = await usecase.execute(id);
 
             if(!result) {
-                return res.status(404).send({
-                    ok: false,
-                    message: "User not found"
-                })
-            };
+                return notFoundError(res, "User not found");
+            }
 
-            return res.status(200).send({
-                ok: true,
-                message: "User succesfully obtained",
-                data: result
-            })
+            return success(res, result, "User succesfully obtained");
 
         } catch (error: any) {
             return serverError(res, error);

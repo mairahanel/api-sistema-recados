@@ -17,9 +17,16 @@ export class UserRepository {
     }
 
     public async get(id: string) {
-        return await this._repository.findOneBy({
+        const result = await this._repository.findOneBy({
             id
-        })
+        });
+
+        if(!result) {
+            return null
+        }
+
+        return this.mapEntityToModel(result);
+
     }
 
     public async getEmail(email: string) {
