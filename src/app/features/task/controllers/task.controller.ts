@@ -2,10 +2,12 @@ import { Request, Response } from "express";
 import { usersList } from "../../../shared/data/usersList";
 import { TaskRepository } from "../repositories/task.repository";
 import { UserRepository } from "../../user/repositories/user.repository";
-import { Task } from "../../../models/task.model";
 import { notFoundError, serverError, success, successCreate } from "../../../shared/util/response.helper";
 import { ListTasksUsecase } from "../usecases/list-tasks.usecase";
 import { CreateTaskUsecase } from "../usecases/create-task.usecase";
+import { GetUserUsecase } from "../../user/usecases/get-user.usecase";
+import { DeleteTaskUsecase } from "../usecases/delete-task.usecase";
+import { GetTaskUsecase } from "../usecases/get-task.usecase";
 
 export class TaskController {
 
@@ -49,46 +51,37 @@ export class TaskController {
         }
     };
 
-     public async delete(req: Request, res: Response) {
+    //feito
+    public async delete(req: Request, res: Response) {
         try {
             const { userId, id } = req.params;
 
-            const userRepository = new UserRepository();
-            const userResult = await userRepository.get(userId);
+            const userUsecase = new GetUserUsecase(new UserRepository);
+            const userResult = await userUsecase.execute(userId);
 
             if(!userResult) {
-                return res.status(404).send({
-                    ok: false,
-                    message: "User not found"
-                })
+                return notFoundError(res, "User not found");
+            }
+
+            const taskUsecase = new GetTaskUsecase(new TaskRepository);
+            const taskResult = await taskUsecase.execute(id)
+
+            if(!taskResult) {
+                return notFoundError(res, "Task not found");
             };
 
-            const repository = new TaskRepository();
-            const task = await repository.get(id);
-            const result = await repository.delete(id)
+            const usecase = new DeleteTaskUsecase(new TaskRepository);
+            const result = await usecase.execute(id); 
 
-
-             if(!task) {
-                return res.status(404).send({
-                    ok: false,
-                    message: "Task not found"
-                })
-            };
-
-            return res.status(200).send({
-                ok: true,
-                message: "Task succesfully deleted",
-                data: result
-            });
+            return success(res, result, "Task successfully deleted");
 
         } catch (error: any) {
             return serverError(res, error);
         }
     }; 
 
-     public async edit(req: Request, res: Response) {
+/*     public async edit(req: Request, res: Response) {
         try {
-            
             const { userId, id } = req.params;
             const { description, detail } = req.body;
 
@@ -128,7 +121,7 @@ export class TaskController {
         } catch (error: any) {
             return serverError(res, error);
         }
-    }; 
+    }; */ 
 
 
 

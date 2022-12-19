@@ -23,9 +23,15 @@ export class TaskRepository {
     }
 
     public async get(id: string) {
-        return this._repository.findOneBy({
+        const result = await this._repository.findOneBy({
             id
-        })
+        });
+
+        if(!result) {
+            return null;
+        }
+
+        return this.mapEntityToModel(result);
     }
 
     public async create(task: Task) {
@@ -42,7 +48,17 @@ export class TaskRepository {
     }
 
     public async delete(id: string) {
-        return await this._repository.delete(id)
+       const getResult = await this._repository.findOneBy({
+            id
+        });
+
+        if(!getResult) {
+            return null;
+        } 
+
+        const result = await this._repository.delete(id);
+        
+        return this.mapEntityToModel(getResult);
     }
 
     public async update(task: TaskEntity, data: UpdateTaskDTO) {
