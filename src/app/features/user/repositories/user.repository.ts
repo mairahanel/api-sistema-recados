@@ -7,7 +7,13 @@ export class UserRepository {
     private _repository = DatabaseConnection.connection.getRepository(UserEntity);
 
     public async list() {
-        return await this._repository.find();
+        const result = await this._repository.find();
+
+        const users = result.map((item) => {
+            return this.mapEntityToModel(item)
+        });
+
+        return users;
     }
 
     public async get(id: string) {
@@ -32,9 +38,22 @@ export class UserRepository {
         const userEntity = this._repository.create({
             id: user.id,
             email: user.email,
-            senha: user.password
+            senha: user.password,
+            v_senha: user.vPassword
         });
 
-        return await this._repository.save(userEntity);
+        const result = await this._repository.save(userEntity);
+
+        return this.mapEntityToModel(result);
+    }
+
+    
+    private mapEntityToModel(entity: UserEntity) {
+        return User.create(
+            entity.id,
+            entity.email,
+            entity.senha,
+            entity.v_senha,
+        );
     }
 }

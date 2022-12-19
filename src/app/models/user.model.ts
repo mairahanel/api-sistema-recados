@@ -45,13 +45,13 @@ export class User {
         this._vPassword = password
     };
 
-     get tasks() {
+    get tasks() {
         return this._tasks
-    };
+    }; 
 
     set tasks(tasks: Task[]) {
         this._tasks = tasks
-    };
+    }; 
 
     get archivedTasks() {
         return this._archivedTasks;
@@ -61,7 +61,14 @@ export class User {
         this._archivedTasks = task
     } 
 
-   /*  public static create(
+    public toJson() {
+        return {
+            id: this._id,
+            email: this._email,
+        }
+    }
+
+    public static create(
         id: string,
         email: string,
         senha: string,
@@ -69,5 +76,7 @@ export class User {
     ) {
         const user = new User(email, senha, v_senha);
         user._id = id
-    } */
+
+        return user;
+    }
 }

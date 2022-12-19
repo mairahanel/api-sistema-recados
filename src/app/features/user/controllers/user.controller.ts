@@ -1,18 +1,19 @@
 import { Request, Response } from "express";
-import { usersList } from "../../../shared/data/usersList";
 import { UserRepository } from "../repositories/user.repository";
 import { User } from "../../../models/user.model";
-import { serverError, sucess } from "../../../shared/util/response.helper";
+import { serverError, successCreate, success } from "../../../shared/util/response.helper";
+import { ListUsersUsecase } from "../usecases/list-users.usecase";
+import { CreateUserUsecase } from "../usecases/create-user.usecase";
 
 export class UserController {
 
+    //feito
     public async listAll(req: Request, res: Response) {
         try {
+            const usecase = new ListUsersUsecase(new UserRepository);
+            const result = await usecase.execute();
 
-            const repository = new UserRepository();
-            const result = await repository.list();
-
-            return sucess(res, result, "Users succesfully listed");
+            return success(res, result, "Users succesfully listed");
 
         } catch (error: any) {
             return serverError(res, error);
@@ -44,42 +45,22 @@ export class UserController {
         }
     };
 
+    //feito
     public async create(req: Request, res: Response) {
         try {
             
             const {email, password, verifyPassword} = req.body;
 
-            if(!email) {
-                return res.status(400).send({
-                    ok: false,
-                    message: "Email not provided"
-                })
-            };
-
-            if(!password || !verifyPassword) {
-                return res.status(400).send({
-                    ok: false,
-                    message: "Password not provided"
-                })
-            };
-
-            if(verifyPassword !== password) {
-                return res.status(400).send({
-                    ok: false,
-                    message: "Password provided incorrectly"
-                })
-            };
-
-            const user = new User(email, password, verifyPassword);
-
             const repository = new UserRepository();
-            const result = await repository.create(user);
+            const usecase = new CreateUserUsecase(repository);
 
-            return res.status(201).send({
-                ok: true,
-                message: "User succesfully created",
-                data: result
+            const result = await usecase.execute({
+                email,
+                senha: password,
+                v_senha: verifyPassword
             });
+
+            return successCreate(res, result, "User succesfully created");
 
         } catch (error: any) {
             return serverError(res, error);
@@ -87,7 +68,6 @@ export class UserController {
     };
 
     // não feito
-
     public login(req: Request, res: Response) {
         try {
             

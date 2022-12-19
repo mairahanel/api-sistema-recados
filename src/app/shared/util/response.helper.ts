@@ -7,8 +7,16 @@ export const serverError = (res: Response, error: any) => {
     });
 }
 
-export const sucess = (res: Response, data?: any, message?: string) => {
+export const success = (res: Response, data?: any, message?: string) => {
     return res.status(200).send({
+        ok: true, 
+        message,
+        data
+    });
+}
+
+export const successCreate = (res: Response, data?: any, message?: string) => {
+    return res.status(201).send({
         ok: true, 
         message,
         data

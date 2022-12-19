@@ -21,6 +21,12 @@ export class UserEntity {
     })
     senha!: string;
 
+    @Column({
+        length: 20,
+        select: false
+    })
+    v_senha!: string;
+
     @OneToMany(() => TaskEntity, (task) => task.usuario)
     tasks!: TaskEntity[];
 }
