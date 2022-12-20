@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { UserRepository } from "../repositories/user.repository";
-import { serverError, successCreate, success, notFoundError } from "../../../shared/util/response.helper";
+import { serverError, successCreate, success, notFoundError, unauthorizedError } from "../../../shared/util/response.helper";
 import { ListUsersUsecase } from "../usecases/list-users.usecase";
 import { CreateUserUsecase } from "../usecases/create-user.usecase";
 import { GetUserUsecase } from "../usecases/get-user.usecase";
+import { LoginUsecase } from "../usecases/login.usecase";
 
 export class UserController {
 
@@ -61,51 +62,22 @@ export class UserController {
         }
     };
 
-    // não feito
-    public login(req: Request, res: Response) {
+    // feito
+    public async login(req: Request, res: Response) {
         try {
-            
-            const { email, password } = req.body;
+            const { email, password } = req.body; 
 
-            if(!email) {
-                return res.status(400).send({
-                    ok: false,
-                    message: "Email not provided"
-                })
-            };
-
-            if(!password) {
-                return res.status(400).send({
-                    ok: false,
-                    message: "Password not provided"
-                })
-            };
-
-            //let checkUser = usersList.find((user) => user.email === email);
-
-            const repository = new UserRepository();
-            const result = repository.getEmail(email);
-            //const resultUser = repository.getUsuario(password);
+            const usecase = new LoginUsecase(new UserRepository);
+            const result = await usecase.execute({
+                email,
+                password
+            });
 
             if(!result) {
-                return res.status(404).send({
-                    ok: false,
-                    message: "User not found"
-                })
-            };
+                return unauthorizedError(res, "Error when logging in");
+            }
 
-/*              if(resultUser !== password) {
-                return res.status(400).send({
-                    ok: false,
-                    message: "Login error"
-                })
-            };  */
-
-            return res.status(200).send({
-                ok: true,
-                message: "Login succesfully done",
-                data: result
-            });
+            return success(res, result, "Login successfully done");
 
         } catch (error: any) {
             return serverError(res, error);

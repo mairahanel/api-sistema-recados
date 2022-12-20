@@ -54,6 +54,18 @@ export class UserRepository {
         return this.mapEntityToModel(result);
     }
 
+    public async findByEmailPassword(email: string, senha: string) {
+        const result = await this._repository.findOneBy({
+            email, senha
+        });
+
+        if(!result) {
+            return null;
+        }
+
+        return this.mapEntityToModel(result);
+    }
+
     
     private mapEntityToModel(entity: UserEntity) {
         return User.create(

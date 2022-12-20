@@ -3,7 +3,8 @@ import { DatabaseConnection } from "../../../../main/database/typeorm.connection
 import { TaskEntity } from "../../../shared/entities/task.entity";
 
 interface UpdateTaskDTO {
-    description?: string,
+    id: string;
+    description?: string;
     detail? : string
 }
 
@@ -61,7 +62,7 @@ export class TaskRepository {
         return this.mapEntityToModel(getResult);
     }
 
-    public async update(task: TaskEntity, data: UpdateTaskDTO) {
+/*     public async update(task: TaskEntity, data: UpdateTaskDTO) {
         if(data.description) {
             task.descricao = data.description;
         }
@@ -70,8 +71,25 @@ export class TaskRepository {
             task.detalhamento = data.detail;
         }
 
-        return await this._repository.save(task);
-    }
+        const result = await this._repository.save(task);
+
+        return this.mapEntityToModel(result);
+    }  */
+
+/*     public async update(task: UpdateTaskDTO) {
+        const result = await this._repository.update(
+          {
+            id: task.id,
+          },
+          {
+            description: task.description,
+            detail: task.detail,
+          }
+        );
+    
+        return result.affected ?? 0;
+      } */
+
 
     private mapEntityToModel(entity: TaskEntity) {
         return Task.create(

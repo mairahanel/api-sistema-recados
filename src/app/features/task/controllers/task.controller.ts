@@ -8,6 +8,7 @@ import { CreateTaskUsecase } from "../usecases/create-task.usecase";
 import { GetUserUsecase } from "../../user/usecases/get-user.usecase";
 import { DeleteTaskUsecase } from "../usecases/delete-task.usecase";
 import { GetTaskUsecase } from "../usecases/get-task.usecase";
+import { UpdateTaskUsecase } from "../usecases/update-task.usecase";
 
 export class TaskController {
 
@@ -80,48 +81,45 @@ export class TaskController {
         }
     }; 
 
-/*     public async edit(req: Request, res: Response) {
+   /* public async edit(req: Request, res: Response) {
         try {
             const { userId, id } = req.params;
             const { description, detail } = req.body;
 
+            //const userRepository = new UserRepository();
+            //const userResult = await userRepository.get(userId);
 
-            const userRepository = new UserRepository();
-            const userResult = await userRepository.get(userId);
+            const userUsecase = new GetUserUsecase(new UserRepository);
+            const userResult = await userUsecase.execute(userId);
 
             if(!userResult) {
-                return res.status(404).send({
-                    ok: false,
-                    message: "User not found"
-                })
-            };
+                return notFoundError(res, "User not found");
+            }
 
-            const repository = new TaskRepository();
-            const result = await repository.get(id);
+            //const repository = new TaskRepository();
+            //const result = await repository.get(id);
 
-            if(!result) {
-                return res.status(404).send({
-                    ok: false,
-                    message: 'Task not found'
-                })
-            };
+            const taskUsecase = new GetTaskUsecase(new TaskRepository);
+            const taskResult = await taskUsecase.execute(id);
 
-            const resultUpdate = await repository.update(result, {
+            if(!taskResult) {
+                return notFoundError(res, "Task not found");
+            }
+
+            const usecase = new UpdateTaskUsecase(new TaskRepository);
+            const result = await usecase.execute(description, detail);
+
+/*             const resultUpdate = await repository.update(result, {
                 description,
                 detail
-            });
+            }); */
 
-
-            return res.status(201).send({
-                ok: true,
-                message: "Task succesfully updated",
-                data: resultUpdate
-            });
+/*             return successCreate(res, result, "Task successfully updated");
 
         } catch (error: any) {
             return serverError(res, error);
-        }
-    }; */ 
+        } 
+    }; */
 
 
 

@@ -10,7 +10,7 @@ taskRoutes.get("/:userId/tasks", (req: Request, res: Response) => new TaskContro
 
 taskRoutes.delete("/:userId/tasks/:id", (req: Request, res: Response) => new TaskController().delete(req, res));
 
-taskRoutes.put("/:userId/tasks/:id", (req: Request, res: Response) => new TaskController().edit(req, res));
+//taskRoutes.put("/:userId/tasks/:id", (req: Request, res: Response) => new TaskController().edit(req, res));
 
 taskRoutes.post("/:userId/tasks/:id", (req: Request, res: Response) => new TaskController().toFile(req, res));
 

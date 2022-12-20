@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import { UserController } from "../controllers/user.controller";
 import { emailExistsMiddleware } from "../../../shared/middlewares/email-exists.middleware";
 import { createUserValidator } from "../validators/create-user.validator";
+import { loginValidator } from "../validators/login.validator";
 
 export const userRoutes = Router();
 
@@ -11,5 +12,5 @@ userRoutes.get("/:id", (req: Request, res: Response) => new UserController().get
 
 userRoutes.post("/", [createUserValidator], (req: Request, res: Response) => new UserController().create(req, res));
 
-userRoutes.post("/login", (req: Request, res: Response) => new UserController().login(req, res));
+userRoutes.post("/auth", [loginValidator], (req: Request, res: Response) => new UserController().login(req, res));
 
