@@ -2,12 +2,12 @@ import { Task } from "../../../models/task.model";
 import { DatabaseConnection } from "../../../../main/database/typeorm.connection";
 import { TaskEntity } from "../../../shared/entities/task.entity";
 
-interface UpdateTaskDTO {
+/* interface UpdateTaskDTO {
     id: string;
     description?: string;
     detail? : string
 }
-
+ */
 export class TaskRepository {
     private _repository = DatabaseConnection.connection.getRepository(TaskEntity);
 
@@ -76,19 +76,16 @@ export class TaskRepository {
         return this.mapEntityToModel(result);
     }  */
 
-/*     public async update(task: UpdateTaskDTO) {
-        const result = await this._repository.update(
-          {
-            id: task.id,
-          },
-          {
-            description: task.description,
-            detail: task.detail,
-          }
-        );
-    
+    public async update(task: Task) {
+        const result = await this._repository.update({
+            id: task.id
+        }, {
+            descricao: task.description,
+            detalhamento: task.detail
+        });
+
         return result.affected ?? 0;
-      } */
+      }
 
 
     private mapEntityToModel(entity: TaskEntity) {

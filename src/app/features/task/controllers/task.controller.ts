@@ -34,7 +34,7 @@ export class TaskController {
     }; 
 
     //feito
-    public async getAll(req: Request, res: Response) {
+    public async list(req: Request, res: Response) {
         try {
             
             const { userId } = req.params;
@@ -54,6 +54,25 @@ export class TaskController {
     };
 
     //feito
+    public async get(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+
+            const usecase = new GetTaskUsecase(new TaskRepository, new CacheRepository);
+            const result = await usecase.execute(id);
+
+            if(!result) {
+                return notFoundError(res, "Task not found");
+            }
+
+            return success(res, result, "Task successfully obtained");
+
+        } catch (error: any) {
+            return serverError(res, error);
+        }
+    }
+
+    //feito
     public async delete(req: Request, res: Response) {
         try {
             const { userId, id } = req.params;
@@ -65,8 +84,8 @@ export class TaskController {
                 return notFoundError(res, "User not found");
             }
 
-            const taskUsecase = new GetTaskUsecase(new TaskRepository);
-            const taskResult = await taskUsecase.execute(id)
+            const taskUsecase = new GetTaskUsecase(new TaskRepository, new CacheRepository);
+            const taskResult = await taskUsecase.execute(id);
 
             if(!taskResult) {
                 return notFoundError(res, "Task not found");
@@ -82,49 +101,30 @@ export class TaskController {
         }
     }; 
 
-   /* public async edit(req: Request, res: Response) {
+    //não feito
+    public async update(req: Request, res: Response) {
         try {
-            const { userId, id } = req.params;
+            const { id } = req.params;
             const { description, detail } = req.body;
 
-            //const userRepository = new UserRepository();
-            //const userResult = await userRepository.get(userId);
+            const usecase = new UpdateTaskUsecase(new TaskRepository);
+            const result = await usecase.execute({
+                id,
+                description,
+                detail
+            });
 
-            const userUsecase = new GetUserUsecase(new UserRepository);
-            const userResult = await userUsecase.execute(userId);
-
-            if(!userResult) {
-                return notFoundError(res, "User not found");
-            }
-
-            //const repository = new TaskRepository();
-            //const result = await repository.get(id);
-
-            const taskUsecase = new GetTaskUsecase(new TaskRepository);
-            const taskResult = await taskUsecase.execute(id);
-
-            if(!taskResult) {
+            if(result === null) {
                 return notFoundError(res, "Task not found");
             }
 
-            const usecase = new UpdateTaskUsecase(new TaskRepository);
-            const result = await usecase.execute(description, detail);
-
-/*             const resultUpdate = await repository.update(result, {
-                description,
-                detail
-            }); */
-
-/*             return successCreate(res, result, "Task successfully updated");
+            return successCreate(res, result, "Task successfully updated");
 
         } catch (error: any) {
             return serverError(res, error);
         } 
-    }; */
+    };
 
-
-
-    //não feito
      public toFile(req: Request, res: Response) {
         try {
             

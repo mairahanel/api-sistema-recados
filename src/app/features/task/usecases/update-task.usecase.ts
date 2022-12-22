@@ -11,9 +11,18 @@ interface UpdateTaskDTO {
 export class UpdateTaskUsecase {
     constructor(private repository: TaskRepository) {}
 
-/*     public async execute(data: UpdateTaskDTO) {
-        const result = await this.repository.update(data);
+    public async execute(data: UpdateTaskDTO) {
+        const task = await this.repository.get(data.id);
 
-        return result.toJson();
-    } */
+        if(!task) {
+            return null;
+        }
+
+        task.description = data.description ?? task.description;
+        task.detail = data.detail ?? task.detail;
+
+        const result = await this.repository.update(task);
+
+        return result;
+    } 
 }
