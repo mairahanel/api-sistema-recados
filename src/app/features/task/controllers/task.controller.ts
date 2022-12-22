@@ -9,6 +9,7 @@ import { GetUserUsecase } from "../../user/usecases/get-user.usecase";
 import { DeleteTaskUsecase } from "../usecases/delete-task.usecase";
 import { GetTaskUsecase } from "../usecases/get-task.usecase";
 import { UpdateTaskUsecase } from "../usecases/update-task.usecase";
+import { CacheRepository } from "../../../shared/repositories/cache.repository";
 
 export class TaskController {
 
@@ -38,7 +39,7 @@ export class TaskController {
             
             const { userId } = req.params;
 
-            const usecase = new ListTasksUsecase(new TaskRepository);
+            const usecase = new ListTasksUsecase(new TaskRepository(), new CacheRepository());
             const result = await usecase.execute(userId);
 
             if(!result) {

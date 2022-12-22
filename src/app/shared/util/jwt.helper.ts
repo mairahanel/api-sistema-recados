@@ -5,4 +5,8 @@ export class JwtHelper {
     public static createToken(data: any) {
         return jwt.sign(data, authEnv.secret!);
     }
+
+    public static verifyToken(token: string) {
+        return jwt.verify(token, authEnv.secret!);
+    }
 }
