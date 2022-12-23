@@ -4,8 +4,6 @@ import { Task } from './task.model';
 export class User {
 
     private _id: string;
-    private _tasks: Task[];
-    private _archivedTasks: Task[];
 
     constructor(
         private _email: string,
@@ -13,8 +11,6 @@ export class User {
         private _vPassword: string
     ) {
         this._id = createUuid();
-        this._tasks = [];
-        this._archivedTasks = [];
     }
 
     get id() {
@@ -44,22 +40,6 @@ export class User {
     set vPassword(password: string) {
         this._vPassword = password
     };
-
-    get tasks() {
-        return this._tasks
-    }; 
-
-    set tasks(tasks: Task[]) {
-        this._tasks = tasks
-    }; 
-
-    get archivedTasks() {
-        return this._archivedTasks;
-    };
-
-    set archivedTasks(task: Task[]) {
-        this._archivedTasks = task
-    } 
 
     public toJson() {
         return {

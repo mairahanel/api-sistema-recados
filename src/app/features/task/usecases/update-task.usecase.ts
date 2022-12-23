@@ -1,5 +1,4 @@
-import { Task } from "../../../models/task.model";
-import { TaskEntity } from "../../../shared/entities/task.entity";
+import { CacheRepository } from "../../../shared/repositories/cache.repository";
 import { TaskRepository } from "../repositories/task.repository";
 
 interface UpdateTaskDTO {
@@ -9,7 +8,7 @@ interface UpdateTaskDTO {
 }
 
 export class UpdateTaskUsecase {
-    constructor(private repository: TaskRepository) {}
+    constructor(private repository: TaskRepository, private cacheRepository: CacheRepository) {}
 
     public async execute(data: UpdateTaskDTO) {
         const task = await this.repository.get(data.id);
@@ -22,6 +21,9 @@ export class UpdateTaskUsecase {
         task.detail = data.detail ?? task.detail;
 
         const result = await this.repository.update(task);
+
+        await this.cacheRepository.delete(`task-${task.id}`);
+        await this.cacheRepository.delete(`tasks-${task.userId}`);
 
         return result;
     } 

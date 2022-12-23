@@ -13,10 +13,10 @@ taskRoutes.get("/:id/task", [checkLoginMiddleware], (req: Request, res: Response
 
 taskRoutes.put("/:id/tasks", [checkLoginMiddleware], (req: Request, res: Response) => new TaskController().update(req, res));
 
-taskRoutes.delete("/:userId/tasks/:id", [checkLoginMiddleware], (req: Request, res: Response) => new TaskController().delete(req, res));
+taskRoutes.delete("/:id/tasks", [checkLoginMiddleware], (req: Request, res: Response) => new TaskController().delete(req, res));
 
-taskRoutes.post("/:userId/tasks/:id", (req: Request, res: Response) => new TaskController().toFile(req, res));
+//taskRoutes.post("/:userId/tasks/:id", (req: Request, res: Response) => new TaskController().toFile(req, res));
 
-taskRoutes.get("/:userId/tasks/archived", (req: Request, res: Response) => new TaskController().getAllArchived(req, res));
+//taskRoutes.get("/:userId/tasks/archived", (req: Request, res: Response) => new TaskController().getAllArchived(req, res));
 
-taskRoutes.post("/:userId/tasks/:id/archived", (req: Request, res: Response) => new TaskController().unfile(req, res));
+//taskRoutes.post("/:userId/tasks/:id/archived", (req: Request, res: Response) => new TaskController().unfile(req, res));

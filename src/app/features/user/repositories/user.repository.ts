@@ -3,7 +3,6 @@ import { DatabaseConnection } from "../../../../main/database/typeorm.connection
 import { UserEntity } from "../../../shared/entities/user.entity";
 
 export class UserRepository {
-
     private _repository = DatabaseConnection.connection.getRepository(UserEntity);
 
     public async list() {
@@ -26,7 +25,6 @@ export class UserRepository {
         }
 
         return this.mapEntityToModel(result);
-
     }
 
     public async getEmail(email: string) {
@@ -34,12 +32,6 @@ export class UserRepository {
             email
         })
     }
-
-/*     public async getUsuario(usuario: UserEntity) {
-        return await this._repository.findBy({
-            senha: usuario.senha
-        })
-    } */
 
     public async create(user: User) {
         const userEntity = this._repository.create({
@@ -66,7 +58,6 @@ export class UserRepository {
         return this.mapEntityToModel(result);
     }
 
-    
     private mapEntityToModel(entity: UserEntity) {
         return User.create(
             entity.id,

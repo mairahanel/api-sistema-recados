@@ -13,13 +13,12 @@ import { CacheRepository } from "../../../shared/repositories/cache.repository";
 
 export class TaskController {
 
-    //feito
     public async create(req: Request, res: Response) {
         try {
             const { description, detail } = req.body;
             const { userId } = req.params;
 
-            const usecase = new CreateTaskUsecase(new TaskRepository);
+            const usecase = new CreateTaskUsecase(new TaskRepository, new CacheRepository);
             const result = await usecase.execute({
                 description, 
                 detail,
@@ -33,10 +32,8 @@ export class TaskController {
         }
     }; 
 
-    //feito
     public async list(req: Request, res: Response) {
         try {
-            
             const { userId } = req.params;
 
             const usecase = new ListTasksUsecase(new TaskRepository(), new CacheRepository());
@@ -53,7 +50,6 @@ export class TaskController {
         }
     };
 
-    //feito
     public async get(req: Request, res: Response) {
         try {
             const { id } = req.params;
@@ -72,27 +68,16 @@ export class TaskController {
         }
     }
 
-    //feito
     public async delete(req: Request, res: Response) {
         try {
-            const { userId, id } = req.params;
+            const { id } = req.params;
 
-            const userUsecase = new GetUserUsecase(new UserRepository);
-            const userResult = await userUsecase.execute(userId);
-
-            if(!userResult) {
-                return notFoundError(res, "User not found");
-            }
-
-            const taskUsecase = new GetTaskUsecase(new TaskRepository, new CacheRepository);
-            const taskResult = await taskUsecase.execute(id);
-
-            if(!taskResult) {
-                return notFoundError(res, "Task not found");
-            };
-
-            const usecase = new DeleteTaskUsecase(new TaskRepository);
+            const usecase = new DeleteTaskUsecase(new TaskRepository, new CacheRepository);
             const result = await usecase.execute(id); 
+
+            if(result === null) {
+                return notFoundError(res, "Task not found");
+            }
 
             return success(res, result, "Task successfully deleted");
 
@@ -101,13 +86,12 @@ export class TaskController {
         }
     }; 
 
-    //não feito
     public async update(req: Request, res: Response) {
         try {
             const { id } = req.params;
             const { description, detail } = req.body;
 
-            const usecase = new UpdateTaskUsecase(new TaskRepository);
+            const usecase = new UpdateTaskUsecase(new TaskRepository, new CacheRepository);
             const result = await usecase.execute({
                 id,
                 description,
@@ -125,7 +109,8 @@ export class TaskController {
         } 
     };
 
-     public toFile(req: Request, res: Response) {
+    //não feito
+/*     public toFile(req: Request, res: Response) {
         try {
             
             const { userId, id } = req.params;
@@ -166,7 +151,7 @@ export class TaskController {
         }
     }; 
 
-     public getAllArchived(req: Request, res: Response) {
+    public getAllArchived(req: Request, res: Response) {
         try {
             
             const { userId} = req.params;
@@ -191,7 +176,7 @@ export class TaskController {
         }
     }; 
 
-     public unfile(req: Request, res: Response) {
+    public unfile(req: Request, res: Response) {
         try {
             
             const { userId, id } = req.params;
@@ -231,5 +216,5 @@ export class TaskController {
         } catch (error: any) {
             return serverError(res, error);
         }
-    }; 
+    }; */ 
 }

@@ -8,7 +8,6 @@ import { LoginUsecase } from "../usecases/login.usecase";
 
 export class UserController {
 
-    //feito
     public async listAll(req: Request, res: Response) {
         try {
             const usecase = new ListUsersUsecase(new UserRepository);
@@ -19,9 +18,8 @@ export class UserController {
         } catch (error: any) {
             return serverError(res, error);
         }
-    };
+    }
 
-    //feito
     public async getById(req: Request, res: Response) {
         try {
             const { id } = req.params;
@@ -38,12 +36,10 @@ export class UserController {
         } catch (error: any) {
             return serverError(res, error);
         }
-    };
+    }
 
-    //feito
     public async create(req: Request, res: Response) {
         try {
-            
             const {email, password, verifyPassword} = req.body;
 
             const repository = new UserRepository();
@@ -60,9 +56,8 @@ export class UserController {
         } catch (error: any) {
             return serverError(res, error);
         }
-    };
+    }
 
-    // feito
     public async login(req: Request, res: Response) {
         try {
             const { email, password } = req.body; 
@@ -82,5 +77,5 @@ export class UserController {
         } catch (error: any) {
             return serverError(res, error);
         }
-    };
+    }
 }
