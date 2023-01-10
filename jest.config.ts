@@ -4,19 +4,11 @@
  */
 
 export default {
-
-  // Automatically clear mock calls, instances, contexts and results before every test
   clearMocks: true,
-  
+
   collectCoverageFrom: ["<rootDir>/src/app/**/*.ts"],
-
-  // The directory where Jest should output its coverage files
   coverageDirectory: "coverage",
-
-  // An array of regexp pattern strings used to skip coverage collection
-  coveragePathIgnorePatterns: [
-    "\\\\node_modules\\\\"
-  ],
+  coveragePathIgnorePatterns: ["\\\\node_modules\\\\"],
 
   preset: "ts-jest",
 
@@ -26,5 +18,5 @@ export default {
     ".+\\.ts$": "ts-jest",
   },
 
-  roots: ["<rootDir>/tests"],
+  roots: ["<rootDir>/tests"],  
 };

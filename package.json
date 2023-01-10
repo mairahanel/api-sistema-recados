@@ -12,10 +12,18 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:generate": "npm run typeorm migration:generate -- -d ./src/main/config/typeorm.config.ts",
     "migration:run": " npm run typeorm migration:run -- -d ./src/main/config/typeorm.config.ts",
-    "test": "jest -silent -noStackTrace -runInBand",
-    "test:verbose": "jest -verbose -runInBand -detectOpenHandles",
-    "test:coverage": "jest -runInBand -coverage",
-    "test:watch": "jest -silent -noStackTrace -runInBand -watchAll"
+    "test": "jest --silent --noStackTrace --runInBand",
+    "test:verbose": "jest --verbose --runInBand --detectOpenHandles",
+    "test:coverage": "jest --runInBand --coverage",
+    "test:watch": "jest --silent --noStackTrace --runInBand --watchAll",
+    "test:unit": "jest -c ./jest.unit.config.ts --silent --noStackTrace --runInBand",
+    "test:unit:verbose": "jest -c ./jest.unit.config.ts --verbose --runInBand --detectOpenHandles",
+    "test:unit:coverage": "jest -c ./jest.unit.config.ts --runInBand --coverage",
+    "test:unit:watch": "jest -c ./jest.unit.config.ts --silent --noStackTrace --runInBand --watchAll",
+    "test:integration": "jest -c ./jest.integration.config.ts --silent --noStackTrace --runInBand",
+    "test:integration:verbose": "jest -c ./jest.integration.config.ts --verbose --runInBand --detectOpenHandles",
+    "test:integration:coverage": "jest -c ./jest.integration.config.ts --runInBand --coverage",
+    "test:integration:watch": "jest -c ./jest.integration.config.ts --silent --noStackTrace --runInBand --watchAll"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +34,7 @@
     "@types/jest": "^29.2.4",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "^18.7.17",
+    "@types/supertest": "^2.0.12",
     "@types/uuid": "^8.3.4",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
@@ -41,6 +50,7 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
+    "supertest": "^6.3.3",
     "typeorm": "^0.3.10",
     "uuid": "^9.0.0"
   }
